@@ -5,18 +5,22 @@ from async_worker import SkelAsync
 from skel_singleton import SkelSingleton
 
 class FlowCanvas(SkelAsync, SkelSingleton):
-    def __init__(self, wndname, width, height, refresh, middlebox):
+    def __init__(self, wndname = "vispcap", width = 640, height = 480, refresh = 0.01, middlebox = True, resizable = False):
         super().__init__()
         self.width = width
         self.height = height
         self.refresh = refresh
         self.middlebox = middlebox
+        self.resizable = resizable
 
         self.wcursor = 0
         self.hcursor = 0
 
         self.tk_root = tkinter.Tk()
         self.tk_root.title(wndname)
+        if resizable is False:
+            self.tk_root.resizable(False, False)
+
         self.tk_width = self.tk_root.winfo_screenwidth()
         self.tk_height = self.tk_root.winfo_screenheight()
 
@@ -42,10 +46,11 @@ class FlowCanvas(SkelAsync, SkelSingleton):
         self.tk_canvas.pack(side = tkinter.TOP, expand = tkinter.YES, fill = tkinter.BOTH)
 
     def _test_draw(self):
+        if self.wcursor + 2 >= self.width:
+            self.width += 2
+            self.tk_canvas.config(scrollregion = (0, 0, self.width, self.height))
         self.wcursor += 2
-        self.width += 2
         self.tk_canvas.create_line(self.wcursor, 0, self.wcursor, self.height)
-        self.tk_canvas.config(scrollregion = (0, 0, self.width, self.height))
 
     def test_draw(self, count = 1):
         for _ in range(count):

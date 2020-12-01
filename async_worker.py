@@ -1,5 +1,4 @@
 import asyncio
-import threading
 
 from skel_singleton import SkelSingleton
 

@@ -2,11 +2,7 @@ class SkelSingleton:
     _instance = None
 
     @classmethod
-    def _get_instance(cls):
-        return cls._instance
-
-    @classmethod
-    def instance(cls, *args, **kargs):
-        cls._instance = cls(*args, **kargs)
-        cls.instance = cls._get_instance
+    def instance(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = cls(*args, **kwargs)
         return cls._instance
